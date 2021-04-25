@@ -1,0 +1,17 @@
+@startuml
+package application{}
+package order{}
+package stock{}
+package shipping{}
+package product{}
+
+application -> order
+application -> stock
+application -> shipping
+application -> product
+
+order -u-> product
+shipping -u-> product
+stock -u-> product
+
+@enduml
