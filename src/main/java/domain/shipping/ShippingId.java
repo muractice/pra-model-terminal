@@ -1,4 +1,4 @@
 package domain.shipping;
 
-public class ShippingName {
+public class ShippingId {
 }

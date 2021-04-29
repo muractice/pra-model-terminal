@@ -1,11 +1,14 @@
 package domain.application;
 
 import domain.contract.ContractId;
+import domain.goods.MethodOfPayment;
 import domain.order.OrderDate;
-import domain.product.Terminal;
-import domain.shipping.ShippingAddress;
-import domain.shipping.ShippingName;
-import domain.shipping.ShippingRequestDetails;
+import domain.order.OrderDetails;
+import domain.goods.Terminal;
+import domain.shipping.details.ShippingAddress;
+import domain.shipping.details.ShippingDetails;
+import domain.shipping.details.ShippingName;
+import domain.stock.StockRequestDetails;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,6 +18,8 @@ public class TerminalApplication {
     private final ContractId contractId;
     @Getter
     private final Terminal terminal;
+
+    private final MethodOfPayment methodOfPayment;
     @Getter
     private final OrderDate orderDate;
     @Getter
@@ -22,16 +27,26 @@ public class TerminalApplication {
     @Getter
     private final ShippingAddress shippingAddress;
 
-    static TerminalApplication of(Terminal terminal,
-                                  ContractId contractId,
+    static TerminalApplication of(ContractId contractId,
+                                  Terminal terminal,
+                                  MethodOfPayment methodOfPayment,
                                   OrderDate orderDate,
                                   ShippingName shippingName,
                                   ShippingAddress shippingAddress){
-        return new TerminalApplication(contractId,terminal,orderDate,
+        return new TerminalApplication(contractId,terminal,methodOfPayment,orderDate,
                 shippingName,shippingAddress);
     }
 
-    public ShippingRequestDetails createShippingRequestDetails(){
-        return ShippingRequestDetails.of(terminal,shippingName,shippingAddress);
+    public OrderDetails createOrderDetails(){
+        return new OrderDetails(contractId,terminal,methodOfPayment,orderDate);
     }
+
+    public ShippingDetails createShippingDetails(){
+        return ShippingDetails.of(terminal,shippingName,shippingAddress);
+    }
+
+    public StockRequestDetails createStockRequestDetails(){
+        return StockRequestDetails.of(terminal);
+    }
+
 }

@@ -1,0 +1,27 @@
+@startuml
+package application{}
+package order{}
+package shipment{
+package stock{}
+package shipping{}
+}
+package goods{}
+package contract{}
+package linecontract{}
+package purchasedterminal{}
+package check{}
+
+application -> order
+application -> stock
+application -> shipping
+application -> goods
+check -u-> application
+check -r-> contract
+check -r-> linecontract
+check -r-> purchasedterminal
+
+order -u-> goods
+shipping -u-> goods
+stock -u-> goods
+
+@enduml

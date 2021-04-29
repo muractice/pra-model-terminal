@@ -1,17 +1,61 @@
 @startuml
-package application{}
-package order{}
-package stock{}
-package shipping{}
-package product{}
 
-application -> order
-application -> stock
-application -> shipping
-application -> product
+package application{
+class TerminalApplication
+}
+package order{
+class Order
+class OrderDetails
 
-order -u-> product
-shipping -u-> product
-stock -u-> product
+TerminalApplication -> OrderDetails
+Order -l-> OrderDetails
+}
+package stock{
+class Stock
+class StockRequestDetails
+
+TerminalApplication -> StockRequestDetails
+Stock -l-> StockRequestDetails
+}
+
+package shipping{
+    package evnet{
+        class ReceiptEvent
+        class RequestEvent
+    }
+
+RequestEvent -u-> ReceiptEvent
+ReceiptEvent -l-> ShippingDetails
+ShippingEntity -> ReceiptEvent
+ShippingEntity -> RequestEvent
+TerminalApplication -> ShippingDetails
+
+}
+package goods{
+interface Goods
+class Terminal
+Goods <|-- Terminal
+
+StockRequestDetails -u-> Goods
+}
+package contract{}
+package linecontract{
+class LineContractList
+}
+package purchasedterminal{
+class PurchasedTerminalList
+}
+package check{
+class TerminalApplicationPolicy
+TerminalApplicationPolicy -d-> TerminalApplication
+}
+
+application -> goods
+TerminalApplicationPolicy -r-> contract.Contract
+TerminalApplicationPolicy -r-> LineContractList
+TerminalApplicationPolicy -r-> PurchasedTerminalList
+
+order -u-> goods
+ShippingDetails -u-> Goods
 
 @enduml
