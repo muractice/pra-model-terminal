@@ -1,4 +1,4 @@
-package service;
+package service.application;
 
 import domain.application.TerminalApplication;
 import domain.order.Order;

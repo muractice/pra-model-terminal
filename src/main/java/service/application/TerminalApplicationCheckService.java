@@ -1,4 +1,4 @@
-package service;
+package service.application;
 
 import domain.TerminalApplicationPolicy;
 import domain.application.TerminalApplication;
