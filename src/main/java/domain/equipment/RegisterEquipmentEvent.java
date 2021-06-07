@@ -13,7 +13,7 @@ public class RegisterEquipmentEvent {
     private final SerialNumber serialNumber;
 
     public static RegisterEquipmentEvent of(Contract contract, SerialNumber serialNumber){
-        return new RegisterEquipmentEvent(contract.getContractId(),)
+        return new RegisterEquipmentEvent(contract.getContractId(),serialNumber);
     }
 
 }

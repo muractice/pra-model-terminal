@@ -14,7 +14,7 @@ public class RegisterEquipmentEventList {
     private final List<RegisterEquipmentEvent> registerEquipmentEventList;
 
     public static RegisterEquipmentEventList from(Contract contract, ShipEvent shipEvent){
-        
+
         List<SerialNumber> serialNumbers =
         shipEvent.getShippedItemList().getShippedItems().stream().map(ShippedItem::getSerialNumber)
                 .collect(Collectors.toList());

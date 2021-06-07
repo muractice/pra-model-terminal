@@ -10,7 +10,7 @@ public class EquipmentDetails {
     private final EquipmentModel equipmentModel;
 
     public static EquipmentDetails of(SerialNumber serialNumber, EquipmentModel equipmentModel){
-        return new EquipmentModel(serialNumber,equipmentModel);
+        return new EquipmentDetails(serialNumber,equipmentModel);
     }
 
 }
