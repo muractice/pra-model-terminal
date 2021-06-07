@@ -6,7 +6,7 @@ import domain.order.OrderDate;
 import domain.order.OrderDetails;
 import domain.goods.Terminal;
 import domain.shipping.details.ShippingAddress;
-import domain.shipping.details.ShippingDetails;
+import domain.shipping.details.Packing;
 import domain.shipping.details.ShippingName;
 import domain.stock.StockRequestDetails;
 import lombok.AllArgsConstructor;
@@ -41,8 +41,8 @@ public class TerminalApplication {
         return new OrderDetails(contractId,terminal,methodOfPayment,orderDate);
     }
 
-    public ShippingDetails createShippingDetails(){
-        return ShippingDetails.of(terminal,shippingName,shippingAddress);
+    public Packing createShippingDetails(){
+        return Packing.of(terminal,shippingName,shippingAddress);
     }
 
     public StockRequestDetails createStockRequestDetails(){

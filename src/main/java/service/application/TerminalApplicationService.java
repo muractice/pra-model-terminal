@@ -2,9 +2,10 @@ package service.application;
 
 import domain.application.TerminalApplication;
 import domain.order.Order;
+import domain.order.OrderId;
 import domain.order.OrderRepository;
 import domain.shipping.ShippingManagementRepository;
-import domain.shipping.details.ShippingDetails;
+import domain.shipping.details.Packing;
 import domain.shipping.ShippingEntity;
 import domain.shipping.ShippingRepository;
 import domain.shipping.evnet.ShippingEventRepository;
@@ -31,30 +32,31 @@ public class TerminalApplicationService {
     public void receipt(TerminalApplication terminalApplication){
         if (!terminalApplicationCheckService.check(terminalApplication)) return ;
         stock(terminalApplication);
-        order(terminalApplication);
-        ship(terminalApplication);
+        Order order = order(terminalApplication);
+        ship(terminalApplication, order);
     }
 
     private void stock(TerminalApplication terminalApplication){
         stock.allocate(terminalApplication.createStockRequestDetails());
     }
 
-    private void order(TerminalApplication terminalApplication){
+    private Order order(TerminalApplication terminalApplication){
         Order order = Order.of(orderRepository.allocate(),terminalApplication.createOrderDetails());
         orderRepository.register(order);
+        return order;
     }
 
-    private void ship(TerminalApplication terminalApplication){
-        ShippingReceiptEvent shippingReceiptEvent = receiptShipping(terminalApplication);
+    private void ship(TerminalApplication terminalApplication, Order order){
+        ShippingReceiptEvent shippingReceiptEvent = receiptShipping(terminalApplication, order);
         ShippingEntity shippingEntity = ShippingEntity.from(shippingReceiptEvent);
         ShippingEntity requestedShippingEntity = requestShipping(shippingEntity,shippingReceiptEvent);
         shippingRepository.register(requestedShippingEntity);
     }
 
-    private ShippingReceiptEvent receiptShipping(TerminalApplication terminalApplication){
-        ShippingDetails shippingDetails = terminalApplication.createShippingDetails();
+    private ShippingReceiptEvent receiptShipping(TerminalApplication terminalApplication, Order order){
+        Packing packing = terminalApplication.createShippingDetails();
         ShippingReceiptEvent shippingReceiptEvent
-                = ShippingReceiptEvent.of(shippingRepository.allocate(), shippingDetails);
+                = ShippingReceiptEvent.of(shippingRepository.allocate(),order.getOrderId(),packing);
         shippingEventRepository.register(shippingReceiptEvent);
         return shippingReceiptEvent;
     }

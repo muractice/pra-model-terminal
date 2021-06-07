@@ -8,6 +8,8 @@ package contract{}
 package linecontract{}
 package purchasedterminal{}
 package check{}
+package equipment{}
+package deliverycompany{}
 
 application -> order
 application -> stock
@@ -17,7 +19,11 @@ check -u-> application
 check -r-> contract
 check -r-> linecontract
 check -r-> purchasedterminal
+shipping <-- deliverycompany
+shipping <-l- equipment
+contract <-- equipment
 
+order -[hidden]r-> shipping
 order -u-> goods
 shipping -u-> goods
 stock -u-> goods

@@ -4,9 +4,11 @@ import domain.contract.ContractId;
 import domain.goods.MethodOfPayment;
 import domain.goods.Terminal;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
 public class OrderDetails {
+    @Getter
     private final ContractId contractId;
     private final Terminal terminal;
     private final MethodOfPayment methodOfPayment;

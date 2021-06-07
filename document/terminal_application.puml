@@ -18,19 +18,43 @@ TerminalApplication -> StockRequestDetails
 Stock -l-> StockRequestDetails
 }
 
+
+package equipmentidentifier{
+    class IdentifierOfEquipment
+}
+
+
+package DeliveryCompany{
+class ShippedItemList
+class ShippedListForPacking
+Interface Repository
+
+ShippedListForPacking -> ShippedItemList
+ShippedListForPacking -[hidden]u-> Repository
+}
+
 package shipping{
     package evnet{
         class ReceiptEvent
         class RequestEvent
+        class ShipEvent
     }
 
 RequestEvent -u-> ReceiptEvent
 ReceiptEvent -l-> ShippingDetails
+RequestEvent -r-> Packing
+Packing -u-> ShippingDetails
 ShippingEntity -> ReceiptEvent
 ShippingEntity -> RequestEvent
+ShippingEntity -> ShipEvent
 TerminalApplication -> ShippingDetails
-
+ShipEvent o-> ShippedEquipmentList
+IdentifierOfEquipment --> ShipEvent
+ShippedListForPacking -l-> ShipEvent
+ShipEvent -[hidden]u- RequestEvent
+Repository -> Packing
 }
+
 package goods{
 interface Goods
 class Terminal
@@ -49,6 +73,7 @@ package check{
 class TerminalApplicationPolicy
 TerminalApplicationPolicy -d-> TerminalApplication
 }
+
 
 application -> goods
 TerminalApplicationPolicy -r-> contract.Contract
