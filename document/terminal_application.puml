@@ -19,10 +19,17 @@ Stock -l-> StockRequestDetails
 }
 
 
-package equipmentidentifier{
-    class IdentifierOfEquipment
+package equipment{
+    class EquipmentEntity
+    package event{
+        class RegisterEvent
+        class ContractEvent
+    }
+    EquipmentEntity -> TerminalCharge
 }
-
+EquipmentEntity -> RegisterEvent
+EquipmentEntity -> ContractEvent
+RegisterEvent -[hidden]d-> ContractEvent
 
 package DeliveryCompany{
 class ShippedItemList
@@ -38,6 +45,8 @@ package shipping{
         class ReceiptEvent
         class RequestEvent
         class ShipEvent
+        class ArrivalEvent
+        class NotArrivalEvent
     }
 
 RequestEvent -u-> ReceiptEvent
@@ -47,13 +56,20 @@ Packing -u-> ShippingDetails
 ShippingEntity -> ReceiptEvent
 ShippingEntity -> RequestEvent
 ShippingEntity -> ShipEvent
+ShippingEntity -> ArrivalEvent
+ShippingEntity -> NotArrivalEvent
 TerminalApplication -> ShippingDetails
-ShipEvent o-> ShippedEquipmentList
-IdentifierOfEquipment --> ShipEvent
+ShipEvent o---> ShippedEquipmentList
 ShippedListForPacking -l-> ShipEvent
 ShipEvent -[hidden]u- RequestEvent
 Repository -> Packing
+RegisterEvent -u-> ShipEvent
+ContractEvent -u-> ArrivalEvent
+ArrivalEvent -[hidden]u- ShipEvent
+NotArrivalEvent -[hidden]u- ArrivalEvent
+
 }
+
 
 package goods{
 interface Goods
@@ -73,12 +89,18 @@ package check{
 class TerminalApplicationPolicy
 TerminalApplicationPolicy -d-> TerminalApplication
 }
+package charge{
+class ChargeItem
+interface ChargeRep
+}
+TerminalCharge -d-> ChargeItem
 
 
 application -> goods
 TerminalApplicationPolicy -r-> contract.Contract
 TerminalApplicationPolicy -r-> LineContractList
 TerminalApplicationPolicy -r-> PurchasedTerminalList
+RegisterEvent -u-> contract.Contract
 
 order -u-> goods
 ShippingDetails -u-> Goods

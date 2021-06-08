@@ -10,6 +10,7 @@ package purchasedterminal{}
 package check{}
 package equipment{}
 package deliverycompany{}
+package charge{}
 
 application -> order
 application -> stock
@@ -22,6 +23,7 @@ check -r-> purchasedterminal
 shipping <-- deliverycompany
 shipping <-l- equipment
 contract <-- equipment
+equipment -> charge
 
 order -[hidden]r-> shipping
 order -u-> goods
