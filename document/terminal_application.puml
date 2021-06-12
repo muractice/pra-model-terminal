@@ -94,6 +94,7 @@ class ChargeItem
 interface ChargeRep
 }
 TerminalCharge -d-> ChargeItem
+ChargeRep -l-> ChargeItem
 
 
 application -> goods
